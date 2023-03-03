@@ -9,7 +9,7 @@ public class GameBoard : MonoBehaviour
 {
     public int boardSize = 3;
     private int turnsCount = 0;
-    List<List<char>> board = new List<List<char>>();
+    List<List<Mark>> board = new List<List<Mark>>();
 
     public void Start()
     {
@@ -21,10 +21,10 @@ public class GameBoard : MonoBehaviour
     {
         for (int i = 0; i < boardSize; i++)
         {
-            board.Add(new List<char>());
+            board.Add(new List<Mark>());
             for (int j = 0; j < boardSize; j++)
             {
-                board[i].Add('-');
+                board[i].Add(Mark.None);
             }
         }
     }
@@ -123,7 +123,7 @@ public class GameBoard : MonoBehaviour
 
     public bool IsOpenCell(int row, int col)
     {
-        return board[row][col] == '-';
+        return board[row][col] == Mark.None;
     }
 
     public bool IsTie()
