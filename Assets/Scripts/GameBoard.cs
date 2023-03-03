@@ -37,7 +37,7 @@ public class GameBoard : MonoBehaviour
             string line = "";
             for (int j = 0; j < boardSize; j++)
             {
-                line += board[i][j] + " ";
+                line += board[i][j].ToString() + " ";
             }
             boardString += "\n" + line;
         }

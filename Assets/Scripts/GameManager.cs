@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public Player playerA;
     public Player playerB;
     private Camera cam;
+    public Cell cellToInstansiate;
     [SerializeField] private Text boardHeadline;
     [SerializeField] private float clickRadius;
 
@@ -21,8 +22,23 @@ public class GameManager : MonoBehaviour
         currentPlayer = playerA;
         cam = Camera.main;
         updateTurnHeadline();
+        InitCell();
         // TODO: Init Players
         // TODO: Init board?
+    }
+
+    private void InitCell()
+    {
+        for (int i = 0; i < board.boardSize * board.boardSize; i++)
+        {
+            Cell tempCell = Instantiate(cellToInstansiate, board.transform);
+            tempCell.cellRow = (int)(i / board.boardSize);
+            tempCell.cellCol = (int)(i % board.boardSize);
+            tempCell.SetCellPosition();
+            tempCell.name = "Cell " + i.ToString();
+            Debug.Log(tempCell.cellRow + " " + tempCell.cellCol);
+        }
+
     }
 
     public void SwitchPlayer()
@@ -44,6 +60,7 @@ public class GameManager : MonoBehaviour
             // Update board logic
             board.UpdateCell(row, col, currentPlayer);
             // Update board UI
+            Debug.Log(currentPlayer.playerSprite.name);
             clickedCell.SetAsMarked(currentPlayer.playerSprite);
 
             if (board.IsWinner(currentPlayer))
@@ -77,6 +94,7 @@ public class GameManager : MonoBehaviour
             if (hit)
             {
                 Cell clickedCell = hit.GetComponent<Cell>();
+                Debug.Log(clickedCell.cellCol + " " + clickedCell.cellRow);
                 HandleHit(clickedCell);
             }
         }
