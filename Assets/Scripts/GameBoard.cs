@@ -7,7 +7,7 @@ using UnityEngine;
 // https://www.youtube.com/watch?v=EANtTI6BCxk&ab_channel=Omnirift
 public class GameBoard : MonoBehaviour
 {
-    public int boardSize = 3;
+    public int boardSize = 3; // TODO: set to private
     private int turnsCount = 0;
     List<List<Mark>> board = new List<List<Mark>>();
 
@@ -37,7 +37,7 @@ public class GameBoard : MonoBehaviour
             string line = "";
             for (int j = 0; j < boardSize; j++)
             {
-                line += board[i][j].ToString() + " ";
+                line += board[i][j] + " ";
             }
             boardString += "\n" + line;
         }

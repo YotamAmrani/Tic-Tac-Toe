@@ -5,7 +5,7 @@ public class Cell : MonoBehaviour
     public int cellRow;
     public int cellCol;
 
-    private float cellSize;
+    [SerializeField] private float cellSize;
     private SpriteRenderer spriteRenderer;
     // public GameBoard gameBoard;
     private void Awake()
@@ -14,7 +14,7 @@ public class Cell : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void SetCellPosition()
+    public void SetCellPosition(int cellRow, int cellCol)
     {
         transform.localPosition = new Vector3(cellSize * (cellRow - 1), cellSize * (cellCol - 1), 0);
     }

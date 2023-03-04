@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public Player playerB;
     private Camera cam;
     public Cell cellToInstansiate;
+
+    public Canvas boardUI;
     [SerializeField] private Text boardHeadline;
     [SerializeField] private float clickRadius;
 
@@ -26,7 +28,6 @@ public class GameManager : MonoBehaviour
         // TODO: Init Players
         // TODO: Init board?
     }
-
     private void InitCell()
     {
         for (int i = 0; i < board.boardSize * board.boardSize; i++)
@@ -34,18 +35,16 @@ public class GameManager : MonoBehaviour
             Cell tempCell = Instantiate(cellToInstansiate, board.transform);
             tempCell.cellRow = (int)(i / board.boardSize);
             tempCell.cellCol = (int)(i % board.boardSize);
-            tempCell.SetCellPosition();
+            tempCell.SetCellPosition(tempCell.cellRow, tempCell.cellCol);
             tempCell.name = "Cell " + i.ToString();
             Debug.Log(tempCell.cellRow + " " + tempCell.cellCol);
         }
 
     }
-
     public void SwitchPlayer()
     {
         currentPlayer = currentPlayer == playerA ? playerB : playerA;
     }
-
     void updateTurnHeadline()
     {
         boardHeadline.text = " It is player's " + currentPlayer.playerName + " turn !";
@@ -67,13 +66,16 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("We have a winner!");
                 boardHeadline.text = "Player " + currentPlayer.playerName + " won !";
-                SceneManager.LoadScene("EndingScene");
+                Transform child = boardUI.transform.Find("BG");
+                child.gameObject.SetActive(true);
+
+                // SceneManager.LoadScene("EndingScene");
             }
             else if (board.IsTie())
             {
                 Debug.Log("It's a Tie !");
                 boardHeadline.text = "It's a Tie !";
-                SceneManager.LoadScene("EndingScene");
+                // SceneManager.LoadScene("EndingScene");
             }
             else
             {
@@ -84,7 +86,6 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
     public void detectClick()
     {
         if (Input.GetMouseButtonUp(0))
