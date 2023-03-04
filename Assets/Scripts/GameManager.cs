@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         currentPlayer = playerA;
         cam = Camera.main;
         board.InitCells();
-        UpdateHeadline(" It is player's " + currentPlayer.playerName + " turn !");
+        UpdateHeadline("Player " + currentPlayer.playerName + " - You go first...");
 
     }
 
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 SwitchPlayer();
-                UpdateHeadline(" It is player's " + currentPlayer.playerName + " turn !");
+                UpdateHeadline("Player " + currentPlayer.playerName + " - it is your turn !");
             }
             // board.PrintBoard();
         }
