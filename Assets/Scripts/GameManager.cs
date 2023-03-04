@@ -81,7 +81,6 @@ public class GameManager : MonoBehaviour
             if (hit)
             {
                 Cell clickedCell = hit.GetComponent<Cell>();
-                Debug.Log(clickedCell.cellCol + " " + clickedCell.cellRow);
                 HandleHit(clickedCell);
             }
         }
