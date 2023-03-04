@@ -35,7 +35,8 @@ public class GameManager : MonoBehaviour
 
     private void UpdateHeadline(string toDisplay)
     {
-        Text headline = boardUI.GetComponentInChildren<Text>();
+        Transform child = boardUI.transform.Find("BoardHeadline");
+        Text headline = child.GetComponent<Text>();
         headline.text = toDisplay;
     }
 
