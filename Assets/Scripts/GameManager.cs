@@ -1,81 +1,77 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-
-// https://www.youtube.com/watch?v=PNzXXKCw4-U&list=PLkzh1bySTmYB83ybePBUtsP4t0DAdspiw&index=2&ab_channel=UYStudios
 
 public class GameManager : MonoBehaviour
 {
     public GameBoard board;
+    public Cell cellToInstansiate;
     public Player playerA;
     public Player playerB;
     private Camera cam;
-    public Cell cellToInstansiate; //TODO: figure out best place to init the cells
-
     public Canvas boardUI;
-    [SerializeField] private Text boardHeadline;
+    private Text boardHeadline;
     [SerializeField] private float clickRadius;
 
-    // Start is called before the first frame update
     Player currentPlayer;
     void Start()
     {
         // Set starting player
         currentPlayer = playerA;
         cam = Camera.main;
-        updateTurnHeadline();
-        // InitCell();
-        // TODO: Init Players
-        // TODO: Init board?
+        board.InitCells();
+        UpdateHeadline(" It is player's " + currentPlayer.playerName + " turn !");
+
     }
-    public void SwitchPlayer()
+
+    void Update()
+    {
+        DetectClick();
+    }
+
+    private void SwitchPlayer()
     {
         currentPlayer = currentPlayer == playerA ? playerB : playerA;
     }
-    void updateTurnHeadline()
+
+    private void UpdateHeadline(string toDisplay)
     {
-        boardHeadline.text = " It is player's " + currentPlayer.playerName + " turn !";
+        Text headline = boardUI.GetComponentInChildren<Text>();
+        headline.text = toDisplay;
     }
-    public void HandleHit(Cell clickedCell)
+
+    private void HandleHit(Cell clickedCell)
     {
         int row = clickedCell.cellRow;
         int col = clickedCell.cellCol;
 
         if (board.IsOpenCell(row, col))
         {
-            // Update board logic
+            // Update board inner logic
             board.UpdateCell(row, col, currentPlayer);
             // Update board UI
-            Debug.Log(currentPlayer.playerSprite.name);
             clickedCell.SetAsMarked(currentPlayer.playerSprite);
 
             if (board.IsWinner(currentPlayer))
             {
-                Debug.Log("We have a winner!");
-                boardHeadline.text = "Player " + currentPlayer.playerName + " won !";
-                Transform child = boardUI.transform.Find("EndUI");
-                child.gameObject.SetActive(true);
-
-                // SceneManager.LoadScene("EndingScene");
+                UpdateHeadline("Player " + currentPlayer.playerName + " won !");
+                EndGame();
             }
             else if (board.IsTie())
             {
-                Debug.Log("It's a Tie !");
-                boardHeadline.text = "It's a Tie !";
-                // SceneManager.LoadScene("EndingScene");
-                Transform child = boardUI.transform.Find("EndUI");
-                child.gameObject.SetActive(true);
+                UpdateHeadline("It's a Tie !");
+                EndGame();
             }
             else
             {
                 SwitchPlayer();
-                updateTurnHeadline();
+                UpdateHeadline(" It is player's " + currentPlayer.playerName + " turn !");
             }
-            board.PrintBoard();
+            // board.PrintBoard();
         }
 
     }
-    public void detectClick()
+
+    private void DetectClick()
     {
         if (Input.GetMouseButtonUp(0))
         {
@@ -89,8 +85,12 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void Update()
+
+    private void EndGame()
     {
-        detectClick();
+        Transform child = boardUI.transform.Find("EndUI");
+        child.gameObject.SetActive(true);
+        board.DisableCells();
     }
+
 }

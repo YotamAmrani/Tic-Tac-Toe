@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
@@ -8,13 +6,14 @@ public class SceneLoader : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("MainScene 1");
+        SceneManager.LoadScene("MainScene");
     }
 
     public void Menu()
     {
         SceneManager.LoadScene("WelcomeScene");
     }
+
     public void EndGame()
     {
         Application.Quit();

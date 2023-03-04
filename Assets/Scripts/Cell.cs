@@ -16,6 +16,7 @@ public class Cell : MonoBehaviour
 
     public void SetCellPosition(int cellRow, int cellCol)
     {
+        // Calculate the cell location based on the cell size, its and location on board
         transform.localPosition = new Vector3(cellSize * (cellRow - 1), cellSize * (cellCol - 1), 0);
     }
 

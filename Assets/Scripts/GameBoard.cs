@@ -1,13 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// https://stackoverflow.com/questions/39114670/how-to-create-dynamic-table-in-unity
-
-// Click objects
-// https://www.youtube.com/watch?v=EANtTI6BCxk&ab_channel=Omnirift
 public class GameBoard : MonoBehaviour
 {
-    private int boardSize = 3; // TODO: set to private
+    private int boardSize = 3;
     public Cell cellToInstansiate;
 
     private int turnsCount = 0;
@@ -16,12 +12,10 @@ public class GameBoard : MonoBehaviour
     public void Start()
     {
         InitializeBoard();
-        InitCell();
-        PrintBoard();
-
+        // PrintBoard();
     }
 
-    private void InitCell()
+    public void InitCells()
     {
         for (int i = 0; i < boardSize * boardSize; i++)
         {
@@ -30,12 +24,23 @@ public class GameBoard : MonoBehaviour
             tempCell.cellCol = (int)(i % boardSize);
             tempCell.SetCellPosition(tempCell.cellRow, tempCell.cellCol);
             tempCell.name = "Cell " + i.ToString();
-            Debug.Log(tempCell.cellRow + " " + tempCell.cellCol);
         }
 
     }
 
-    void InitializeBoard()
+    public void DisableCells()
+    {
+        foreach (Cell child in GetComponentsInChildren<Cell>())
+        {
+            if (IsOpenCell(child.cellRow, child.cellCol))
+            {
+                child.SetAsMarked(null);
+            }
+
+        }
+    }
+
+    private void InitializeBoard()
     {
         for (int i = 0; i < boardSize; i++)
         {
@@ -47,23 +52,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    public void PrintBoard()
-    {
-        string boardString = "";
-        for (int i = 0; i < boardSize; i++)
-        {
-            string line = "";
-            for (int j = 0; j < boardSize; j++)
-            {
-                line += board[i][j] + " ";
-            }
-            boardString += "\n" + line;
-        }
-        Debug.Log(boardString);
-
-    }
-
-    bool CheckRows(Player player)
+    private bool CheckRows(Player player)
     {
         for (int i = 0; i < boardSize; i++)
         {
@@ -83,7 +72,7 @@ public class GameBoard : MonoBehaviour
         return false;
     }
 
-    bool CheckCol(Player player)
+    private bool CheckColumns(Player player)
     {
         for (int i = 0; i < boardSize; i++)
         {
@@ -103,7 +92,7 @@ public class GameBoard : MonoBehaviour
         return false;
     }
 
-    bool CheckDiagonlA(Player player)
+    private bool CheckDiagonlA(Player player)
     {
         int signCounter = 0;
         for (int j = 0; j < boardSize; j++)
@@ -121,7 +110,7 @@ public class GameBoard : MonoBehaviour
         return false;
     }
 
-    bool CheckDiagonlB(Player player)
+    private bool CheckDiagonlB(Player player)
     {
         int signCounter = 0;
         for (int j = 0; j < boardSize; j++)
@@ -139,23 +128,41 @@ public class GameBoard : MonoBehaviour
         return false;
     }
 
+    public void PrintBoard()
+    {
+        string boardString = "";
+        for (int i = 0; i < boardSize; i++)
+        {
+            string line = "";
+            for (int j = 0; j < boardSize; j++)
+            {
+                line += board[i][j] + " ";
+            }
+            boardString += "\n" + line;
+        }
+        Debug.Log(boardString);
+
+    }
+
     public bool IsOpenCell(int row, int col)
     {
         return board[row][col] == Mark.None;
     }
 
-    public bool IsTie()
-    {
-        return turnsCount == boardSize * boardSize;
-    }
     public void UpdateCell(int row, int column, Player player)
     {
         board[row][column] = player.playerSign;
         turnsCount += 1;
     }
 
+    public bool IsTie()
+    {
+        return turnsCount == boardSize * boardSize;
+    }
+
     public bool IsWinner(Player player)
     {
-        return CheckRows(player) || CheckCol(player) || CheckDiagonlA(player) || CheckDiagonlB(player);
+        return CheckRows(player) || CheckColumns(player) || CheckDiagonlA(player) || CheckDiagonlB(player);
     }
+
 }
