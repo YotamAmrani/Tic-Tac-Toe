@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public Player playerA;
     public Player playerB;
     private Camera cam;
-    public Cell cellToInstansiate;
+    public Cell cellToInstansiate; //TODO: figure out best place to init the cells
 
     public Canvas boardUI;
     [SerializeField] private Text boardHeadline;
@@ -24,22 +24,9 @@ public class GameManager : MonoBehaviour
         currentPlayer = playerA;
         cam = Camera.main;
         updateTurnHeadline();
-        InitCell();
+        // InitCell();
         // TODO: Init Players
         // TODO: Init board?
-    }
-    private void InitCell()
-    {
-        for (int i = 0; i < board.boardSize * board.boardSize; i++)
-        {
-            Cell tempCell = Instantiate(cellToInstansiate, board.transform);
-            tempCell.cellRow = (int)(i / board.boardSize);
-            tempCell.cellCol = (int)(i % board.boardSize);
-            tempCell.SetCellPosition(tempCell.cellRow, tempCell.cellCol);
-            tempCell.name = "Cell " + i.ToString();
-            Debug.Log(tempCell.cellRow + " " + tempCell.cellCol);
-        }
-
     }
     public void SwitchPlayer()
     {
@@ -66,7 +53,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("We have a winner!");
                 boardHeadline.text = "Player " + currentPlayer.playerName + " won !";
-                Transform child = boardUI.transform.Find("BG");
+                Transform child = boardUI.transform.Find("EndUI");
                 child.gameObject.SetActive(true);
 
                 // SceneManager.LoadScene("EndingScene");
@@ -76,6 +63,8 @@ public class GameManager : MonoBehaviour
                 Debug.Log("It's a Tie !");
                 boardHeadline.text = "It's a Tie !";
                 // SceneManager.LoadScene("EndingScene");
+                Transform child = boardUI.transform.Find("EndUI");
+                child.gameObject.SetActive(true);
             }
             else
             {

@@ -19,12 +19,11 @@ public class Clicker : MonoBehaviour
     Vector2 ExctractCellCoordinates2()
     {
         Vector2 clickPosition = UnityEngine.Input.mousePosition;
-        Vector2 cellDimensions = boardCollider.size / gameManager.board.boardSize;
+        Vector2 cellDimensions = boardCollider.size / 3;
         Debug.Log("click: " + clickPosition);
         Debug.Log("cell dim: " + cellDimensions);
 
-        // float cellwidth = boardCollider.size[1] / gameManager.board.boardSize;
-        // float cellheight = boardCollider.size[0] / gameManager.board.boardSize;
+
         clickPosition -= (Vector2)boardPosition.position;
 
         return new Vector2(Mathf.Floor(clickPosition[1] / cellDimensions[0]), Mathf.Floor(clickPosition[0] / cellDimensions[1]));
@@ -34,8 +33,8 @@ public class Clicker : MonoBehaviour
     {
         Vector2 currentPosition = UnityEngine.Input.mousePosition;
 
-        float cellwidth = Screen.width / gameManager.board.boardSize;
-        float cellheight = Screen.height / gameManager.board.boardSize;
+        float cellwidth = Screen.width / 3;
+        float cellheight = Screen.height / 3;
         return new Vector2(Mathf.Floor(currentPosition[1] / cellheight), Mathf.Floor(currentPosition[0] / cellwidth));
     }
 

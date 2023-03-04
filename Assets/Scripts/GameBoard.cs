@@ -7,16 +7,34 @@ using UnityEngine;
 // https://www.youtube.com/watch?v=EANtTI6BCxk&ab_channel=Omnirift
 public class GameBoard : MonoBehaviour
 {
-    public int boardSize = 3; // TODO: set to private
+    private int boardSize = 3; // TODO: set to private
+    public Cell cellToInstansiate;
+
     private int turnsCount = 0;
     List<List<Mark>> board = new List<List<Mark>>();
 
     public void Start()
     {
         InitializeBoard();
+        InitCell();
         PrintBoard();
 
     }
+
+    private void InitCell()
+    {
+        for (int i = 0; i < boardSize * boardSize; i++)
+        {
+            Cell tempCell = Instantiate(cellToInstansiate, transform);
+            tempCell.cellRow = (int)(i / boardSize);
+            tempCell.cellCol = (int)(i % boardSize);
+            tempCell.SetCellPosition(tempCell.cellRow, tempCell.cellCol);
+            tempCell.name = "Cell " + i.ToString();
+            Debug.Log(tempCell.cellRow + " " + tempCell.cellCol);
+        }
+
+    }
+
     void InitializeBoard()
     {
         for (int i = 0; i < boardSize; i++)
