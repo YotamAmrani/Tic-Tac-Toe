@@ -3,69 +3,60 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameBoard board;
+    public BoardController boardController;
     public Cell cellToInstansiate;
     public Player playerA;
     public Player playerB;
-    private Camera cam;
-    public Canvas boardUI;
+    // private Camera cam;
+    // public Canvas boardUI;
+    public GameUIController uIController;
+
     private Text boardHeadline;
     [SerializeField] private float clickRadius;
 
-    Player currentPlayer;
+    // Player currentPlayer;
     void Start()
     {
         // Set starting player
-        currentPlayer = playerA;
-        cam = Camera.main;
-        board.InitCells();
-        UpdateHeadline("Player " + currentPlayer.playerName + " - You go first...");
-
+        // currentPlayer = playerA;
+        // cam = Camera.main;
+        // board.InitCells(); //TODO: to fix
+        // uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " - You go first...");
+        boardController.PrintBoard();
     }
 
     void Update()
     {
-        DetectClick();
+        // DetectClick();
     }
 
-    private void SwitchPlayer()
-    {
-        currentPlayer = currentPlayer == playerA ? playerB : playerA;
-    }
-
-    private void UpdateHeadline(string toDisplay)
-    {
-        Transform child = boardUI.transform.Find("BoardHeadline");
-        Text headline = child.GetComponent<Text>();
-        headline.text = toDisplay;
-    }
 
     private void HandleHit(Cell clickedCell)
     {
         int row = clickedCell.cellRow;
         int col = clickedCell.cellCol;
 
-        if (board.IsOpenCell(row, col))
+        if (boardController.IsOpenCell(row, col))
         {
             // Update board inner logic
-            board.UpdateCell(row, col, currentPlayer);
+            boardController.UpdateCell(row, col);
             // Update board UI
-            clickedCell.SetAsMarked(currentPlayer.playerSprite);
+            clickedCell.SetAsMarked(boardController.GetCurrentPlayer().playerSprite);
 
-            if (board.IsWinner(currentPlayer))
+            if (boardController.IsWinner(boardController.GetCurrentPlayer()))
             {
-                UpdateHeadline("Player " + currentPlayer.playerName + " won !");
+                uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " won !");
                 EndGame();
             }
-            else if (board.IsTie())
+            else if (boardController.IsTie())
             {
-                UpdateHeadline("It's a Tie !");
+                uIController.UpdateHeadline("It's a Tie !");
                 EndGame();
             }
             else
             {
-                SwitchPlayer();
-                UpdateHeadline("Player " + currentPlayer.playerName + " - it is your turn !");
+                boardController.SwitchPlayer();
+                uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " - it is your turn !");
             }
             // board.PrintBoard();
         }
@@ -74,23 +65,33 @@ public class GameManager : MonoBehaviour
 
     private void DetectClick()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            Vector2 clickPosition = cam.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapCircle(clickPosition, clickRadius);
-            if (hit)
-            {
-                Cell clickedCell = hit.GetComponent<Cell>();
-                HandleHit(clickedCell);
-            }
-        }
+        // if (Input.GetMouseButtonUp(0))
+        // {
+        //     Vector2 clickPosition = cam.ScreenToWorldPoint(Input.mousePosition);
+        //     Collider2D hit = Physics2D.OverlapCircle(clickPosition, clickRadius);
+        //     if (hit)
+        //     {
+        //         Cell clickedCell = hit.GetComponent<Cell>();
+        //         HandleHit(clickedCell);
+        //     }
+        // }
     }
 
     private void EndGame()
     {
-        Transform child = boardUI.transform.Find("EndUI");
-        child.gameObject.SetActive(true);
-        board.DisableCells();
+        // Transform child = boardUI.transform.Find("EndUI");
+        // child.gameObject.SetActive(true);
+        // boardController.DisableCells();
+        uIController.LoadEndMenu();
     }
 
+
+
+    // load start UI
+    // load game run
+    // load end UI
+    // check for clicks events
+    // update board
+    // look for special cases
+    //  update UI
 }

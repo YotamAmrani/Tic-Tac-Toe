@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Mark playerSign;
-    public Sprite playerSprite;
+    public BoardModel.Mark playerSign;
+    public Sprite playerSprite; // TODO: should move?
     public string playerName;
 
 }
