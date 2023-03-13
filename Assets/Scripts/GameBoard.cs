@@ -6,6 +6,7 @@ public class GameBoard : MonoBehaviour
     private int boardSize = 3;
     public Cell cellToInstansiate;
 
+    public BoardModel boardModel;
     private int turnsCount = 0;
     List<List<Mark>> board = new List<List<Mark>>();
 
