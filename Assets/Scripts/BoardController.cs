@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour
@@ -10,8 +9,6 @@ public class BoardController : MonoBehaviour
     private Player currentPlayer;
     private int currentPlayerIndex;
     private int turnsCount = 0;
-
-    // List<List<Mark>> board = new List<List<Mark>>();
 
     public void Start()
     {
@@ -49,10 +46,12 @@ public class BoardController : MonoBehaviour
         currentPlayerIndex += 1;
         currentPlayer = boardModel.players[(currentPlayerIndex) % BoardModel.BOARD_SIZE];
     }
+
     public Player GetCurrentPlayer()
     {
         return currentPlayer;
     }
+
     private void InitializeBoard() // VERIFIED
     {
         for (int i = 0; i < BoardModel.BOARD_SIZE; i++)

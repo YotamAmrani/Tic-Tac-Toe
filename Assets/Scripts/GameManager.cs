@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,11 +8,10 @@ public class GameManager : MonoBehaviour
     public Player playerA;
     public Player playerB;
     // private Camera cam;
-    // public Canvas boardUI;
     public GameUIController uIController;
-
-    private Text boardHeadline;
     [SerializeField] private float clickRadius;
+
+    // public Action<int> yo;
 
     // Player currentPlayer;
     void Start()
@@ -87,11 +86,18 @@ public class GameManager : MonoBehaviour
 
 
 
-    // load start UI
     // load game run
-    // load end UI
     // check for clicks events
+    // - start game button / runGame again
+    // - end game event
+    // - Back to menu event
     // update board
     // look for special cases
-    //  update UI
+    //  update UI - V
+
+    // next: move Mark into player?
+    // update the cell configuration
+    // create events for each button
+    // handle player instanciation - is it needed? how to load sprites?
+    // change player to be non mono
 }
