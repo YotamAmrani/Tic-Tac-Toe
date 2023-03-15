@@ -4,16 +4,10 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public BoardController boardController;
-    public Cell cellToInstansiate;
-    public Player playerA;
-    public Player playerB;
-    // private Camera cam;
     public GameUIController uIController;
-    [SerializeField] private float clickRadius;
 
-    // public Action<int> yo;
+    // public Cell cellToInstansiate;
 
-    // Player currentPlayer;
     void Start()
     {
         // Set starting player
@@ -21,6 +15,7 @@ public class GameManager : MonoBehaviour
         // cam = Camera.main;
         // board.InitCells(); //TODO: to fix
         // uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " - You go first...");
+        uIController.InitCells();
         boardController.PrintBoard();
     }
 

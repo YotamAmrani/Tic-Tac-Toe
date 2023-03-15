@@ -5,11 +5,12 @@ using UnityEngine.UI;
 public class GameUIController : MonoBehaviour
 {
     public BoardModel boardModel;
-    public Sprite[] playersSigns = new Sprite[BoardModel.PLAYERS_COUNT];
     [SerializeField] private Text headline;
     [SerializeField] private GameObject startMenu;
-    [SerializeField] private GameObject boardUI;
     [SerializeField] private GameObject endMenu;
+    [SerializeField] private GameObject grid;
+
+    [SerializeField] private CellButton cellToInstantiate;
 
     public void UpdateHeadline(string toDisplay) // VERIFIED
     {
@@ -23,6 +24,15 @@ public class GameUIController : MonoBehaviour
     public void InitCells()
     {
         // init all the cells in the board
+        for (int i = 0; i < BoardModel.BOARD_SIZE; i++)
+        {
+            for (int j = 0; j < BoardModel.BOARD_SIZE; j++)
+            {
+                CellButton currentCell = Instantiate(cellToInstantiate, grid.transform);
+                currentCell.SetCellCoordinates(i, j); // TODO: place in the awake?
+                currentCell.SetCellPosition();
+            }
+        }
     }
     private int DetectClick()
     {
@@ -37,11 +47,11 @@ public class GameUIController : MonoBehaviour
     public void LoadGamePanel() // VERIFIED
     {
         startMenu.SetActive(false);
-        boardUI.SetActive(true);
+        grid.SetActive(true);
     }
     public void LoadEndMenu() // VERIFIED
     {
-        boardUI.SetActive(false);
+        grid.SetActive(false);
         endMenu.SetActive(true);
     }
 
