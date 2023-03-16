@@ -21,12 +21,11 @@ public class BoardController : MonoBehaviour
     public void StartNewGame()
     {
         InitializeBoard();
-        Debug.Log("Player index" + currentPlayerIndex);
         currentPlayer = boardModel.players[currentPlayerIndex];
         turnsCount = 0;
     }
 
-    public void SwitchPlayer()
+    private void SwitchPlayer()
     {
         currentPlayerIndex = (currentPlayerIndex + 1) % BoardModel.PLAYERS_COUNT;
         currentPlayer = boardModel.players[currentPlayerIndex];
@@ -140,7 +139,7 @@ public class BoardController : MonoBehaviour
 
     }
 
-    public bool IsOpenCell(int[] cellCoordinates)
+    private bool IsOpenCell(int[] cellCoordinates)
     {
         return boardModel.board[cellCoordinates[0], cellCoordinates[1]] == BoardModel.Mark.None;
     }
@@ -171,12 +170,12 @@ public class BoardController : MonoBehaviour
 
     }
 
-    public bool IsTie()
+    private bool IsTie()
     {
         return turnsCount == BoardModel.BOARD_SIZE * BoardModel.BOARD_SIZE;
     }
 
-    public bool IsWinner()
+    private bool IsWinner()
     {
         return CheckRows() || CheckColumns()
         || CheckDiagonlA() || CheckDiagonlB();

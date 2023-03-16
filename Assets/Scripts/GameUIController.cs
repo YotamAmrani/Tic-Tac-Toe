@@ -24,7 +24,7 @@ public class GameUIController : MonoBehaviour
             for (int j = 0; j < BoardModel.BOARD_SIZE; j++)
             {
                 CellButton currentCell = Instantiate(cellToInstantiate, grid.transform);
-                currentCell.SetCellCoordinates(i, j); // TODO: place in the awake?
+                currentCell.SetCellCoordinates(i, j);
                 currentCell.SetCellPosition();
             }
         }
@@ -50,7 +50,7 @@ public class GameUIController : MonoBehaviour
         startMenu.SetActive(true);
         Debug.Log("Start Menu");
     }
-    public void LoadGamePanel() // VERIFIED
+    public void LoadNewGamePanel() // VERIFIED
     {
         startMenu.SetActive(false);
         endMenu.SetActive(false);

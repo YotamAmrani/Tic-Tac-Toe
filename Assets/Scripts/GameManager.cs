@@ -22,13 +22,12 @@ public class GameManager : MonoBehaviour
     {
         uIController.UpdateHeadline("");
         uIController.LoadStrartMenu();
-        // boardController.StartNewGame(); // Clear board marks, and logic info
         boardController.PrintBoard();
     }
     public void RunGame()
     {
         boardController.StartNewGame();
-        uIController.LoadGamePanel();
+        uIController.LoadNewGamePanel();
         uIController.UpdateHeadline("");
     }
     private void DetectClick(int[] cellCoordinates)
@@ -57,21 +56,20 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
     public void Quit()
     {
         Application.Quit();
         Debug.Log("Qui game!");
     }
 
-    // look for special cases
-    //  update UI - V
-
-    // next: move Mark into player?
-    // update the cell configuration
 }
 
 
+// look for special cases
+//  update UI - V
+
+// next: move Mark into player?
+// update the cell configuration
 
 // private void HandleHit(Cell clickedCell)
 // {
