@@ -1,18 +1,23 @@
 using UnityEngine;
+using System;
 
 public class BoardController : MonoBehaviour
 {
     // private int boardSize = 3;
-    public Cell cellToInstansiate;
+    // public Cell cellToInstansiate;
     public Player playerToInstansiate;
     public BoardModel boardModel;
     private Player currentPlayer;
-    private int currentPlayerIndex;
+    private int currentPlayerIndex = 0;
     private int turnsCount = 0;
+
+    public enum Message { WIN, TIE, SWITCH };
+    public static Action<Message> gameEvent;
 
     public void Start()
     {
         InitializeBoard();
+        currentPlayer = boardModel.players[currentPlayerIndex];
         // PrintBoard();
     }
 
@@ -44,7 +49,7 @@ public class BoardController : MonoBehaviour
     public void SwitchPlayer()
     {
         currentPlayerIndex += 1;
-        currentPlayer = boardModel.players[(currentPlayerIndex) % BoardModel.BOARD_SIZE];
+        currentPlayer = boardModel.players[(currentPlayerIndex) % BoardModel.PLAYERS_COUNT];
     }
 
     public Player GetCurrentPlayer()
@@ -155,15 +160,35 @@ public class BoardController : MonoBehaviour
 
     }
 
-    public bool IsOpenCell(int row, int col)
+    public bool IsOpenCell(int[] cellCoordinates)
     {
-        return boardModel.board[row, col] == BoardModel.Mark.None;
+        return boardModel.board[cellCoordinates[0], cellCoordinates[1]] == BoardModel.Mark.None;
     }
 
-    public void UpdateCell(int row, int column)
+    public void UpdateBoard(int[] cellCoordinates)
     {
-        boardModel.board[row, column] = currentPlayer.playerSign;
-        turnsCount += 1;
+        if (IsOpenCell(cellCoordinates))
+        {
+            boardModel.board[cellCoordinates[0], cellCoordinates[1]] = currentPlayer.playerSign;
+            turnsCount += 1;
+            if (IsWinner())
+            {
+                // invoke winning event !
+                gameEvent(Message.WIN);
+            }
+            else if (IsTie())
+            {
+                // invoke tie event
+                gameEvent(Message.TIE);
+            }
+            else
+            {
+                SwitchPlayer();
+                gameEvent(Message.SWITCH);
+            }
+            PrintBoard();
+        }
+
     }
 
     public bool IsTie()
@@ -171,9 +196,10 @@ public class BoardController : MonoBehaviour
         return turnsCount == BoardModel.BOARD_SIZE * BoardModel.BOARD_SIZE;
     }
 
-    public bool IsWinner(Player player)
+    public bool IsWinner()
     {
-        return CheckRows(player) || CheckColumns(player) || CheckDiagonlA(player) || CheckDiagonlB(player);
+        return CheckRows(currentPlayer) || CheckColumns(currentPlayer)
+        || CheckDiagonlA(currentPlayer) || CheckDiagonlB(currentPlayer);
     }
 
 }

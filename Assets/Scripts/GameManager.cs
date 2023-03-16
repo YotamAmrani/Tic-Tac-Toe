@@ -7,75 +7,54 @@ public class GameManager : MonoBehaviour
     public GameUIController uIController;
 
     // public Cell cellToInstansiate;
+    public void OnEnable()
+    {
+        CellButton.Clicked += DetectClick;
+        BoardController.gameEvent += HandleGameEvent;
+    }
+    public void OnDisable()
+    {
+        CellButton.Clicked -= DetectClick;
+        BoardController.gameEvent -= HandleGameEvent;
 
+    }
     void Start()
     {
-        // Set starting player
-        // currentPlayer = playerA;
-        // cam = Camera.main;
-        // board.InitCells(); //TODO: to fix
-        // uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " - You go first...");
-        uIController.InitCells();
+        uIController.LoadStrartMenu();
         boardController.PrintBoard();
     }
 
-    void Update()
+    private void DetectClick(int[] cellCoordinates)
     {
-        // DetectClick();
+        Debug.Log("got click " + cellCoordinates);
+        Debug.Log("got click Image " + boardController.GetCurrentPlayer().playerSprite);
+        // mark board with current player mark
+        uIController.MarkCell(cellCoordinates, boardController.GetCurrentPlayer().playerSprite);
+        // update game logic - update board, switch turn, test for endGame event
+        boardController.UpdateBoard(cellCoordinates);
     }
 
-
-    private void HandleHit(Cell clickedCell)
+    private void HandleGameEvent(BoardController.Message msg)
     {
-        int row = clickedCell.cellRow;
-        int col = clickedCell.cellCol;
-
-        if (boardController.IsOpenCell(row, col))
+        if (msg == BoardController.Message.WIN)
         {
-            // Update board inner logic
-            boardController.UpdateCell(row, col);
-            // Update board UI
-            clickedCell.SetAsMarked(boardController.GetCurrentPlayer().playerSprite);
-
-            if (boardController.IsWinner(boardController.GetCurrentPlayer()))
-            {
-                uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " won !");
-                EndGame();
-            }
-            else if (boardController.IsTie())
-            {
-                uIController.UpdateHeadline("It's a Tie !");
-                EndGame();
-            }
-            else
-            {
-                boardController.SwitchPlayer();
-                uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " - it is your turn !");
-            }
-            // board.PrintBoard();
+            uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " win!");
+            uIController.LoadEndMenu();
+        }
+        else if (msg == BoardController.Message.TIE)
+        {
+            uIController.UpdateHeadline("It's a TIE!");
+            uIController.LoadEndMenu();
+        }
+        else
+        {
+            uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName
+            + " it is your turn!");
         }
 
     }
-
-    private void DetectClick()
-    {
-        // if (Input.GetMouseButtonUp(0))
-        // {
-        //     Vector2 clickPosition = cam.ScreenToWorldPoint(Input.mousePosition);
-        //     Collider2D hit = Physics2D.OverlapCircle(clickPosition, clickRadius);
-        //     if (hit)
-        //     {
-        //         Cell clickedCell = hit.GetComponent<Cell>();
-        //         HandleHit(clickedCell);
-        //     }
-        // }
-    }
-
     private void EndGame()
     {
-        // Transform child = boardUI.transform.Find("EndUI");
-        // child.gameObject.SetActive(true);
-        // boardController.DisableCells();
         uIController.LoadEndMenu();
     }
 
@@ -96,3 +75,37 @@ public class GameManager : MonoBehaviour
     // handle player instanciation - is it needed? how to load sprites?
     // change player to be non mono
 }
+
+
+
+// private void HandleHit(Cell clickedCell)
+// {
+//     int row = clickedCell.cellRow;
+//     int col = clickedCell.cellCol;
+
+//     if (boardController.IsOpenCell(new int[] { row, col }))
+//     {
+//         // Update board inner logic
+//         boardController.UpdateBoard(new int[] { row, col });
+//         // Update board UI
+//         // clickedCell.SetAsMarked(boardController.GetCurrentPlayer().playerImage);
+
+//         if (boardController.IsWinner())
+//         {
+//             uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " won !");
+//             EndGame();
+//         }
+//         else if (boardController.IsTie())
+//         {
+//             uIController.UpdateHeadline("It's a Tie !");
+//             EndGame();
+//         }
+//         else
+//         {
+//             boardController.SwitchPlayer();
+//             uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName + " - it is your turn !");
+//         }
+//         // board.PrintBoard();
+//     }
+
+// }

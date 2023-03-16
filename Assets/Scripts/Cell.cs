@@ -20,11 +20,11 @@ public class Cell : MonoBehaviour
         transform.localPosition = new Vector3(cellSize * (cellRow - 1), cellSize * (cellCol - 1), 0);
     }
 
-    public void SetAsMarked(Sprite playerSprite)
-    {
-        spriteRenderer.sprite = playerSprite;
-        // Disable the circle collider after it is clicked
-        GetComponent<CircleCollider2D>().enabled = false;
-    }
+    // public void SetAsMarked(Sprite playerSprite)
+    // {
+    //     spriteRenderer.sprite = playerSprite;
+    //     // Disable the circle collider after it is clicked
+    //     GetComponent<CircleCollider2D>().enabled = false;
+    // }
 
 }

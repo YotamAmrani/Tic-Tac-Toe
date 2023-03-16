@@ -9,19 +9,13 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private GameObject startMenu;
     [SerializeField] private GameObject endMenu;
     [SerializeField] private GameObject grid;
-
     [SerializeField] private CellButton cellToInstantiate;
 
-    public void UpdateHeadline(string toDisplay) // VERIFIED
+    void Start()
     {
-        // update the game headline
-        headline.text = toDisplay;
+        InitCells();
     }
-    public void MarkCell(int cellIndex, Sprite playerSign)
-    {
-        // mark the relevant cell in the board grid
-    }
-    public void InitCells()
+    public void InitCells() // VERIFIED
     {
         // init all the cells in the board
         for (int i = 0; i < BoardModel.BOARD_SIZE; i++)
@@ -34,10 +28,21 @@ public class GameUIController : MonoBehaviour
             }
         }
     }
-    private int DetectClick()
+    public void UpdateHeadline(string toDisplay) // VERIFIED
     {
-        // detect a cell click and trigger an event with the relevant cell index
-        return 0;
+        // update the game headline
+        headline.text = toDisplay;
+    }
+    public void MarkCell(int[] cellCoordinates, Sprite playerMark)
+    {
+        int cellIndex = (cellCoordinates[0] * BoardModel.BOARD_SIZE) + cellCoordinates[1];
+        // Get the relevant cell based on it's coordinates:
+        GameObject cellToMark = grid.transform.GetChild(cellIndex).gameObject;
+        CellButton c = cellToMark.GetComponent<CellButton>();
+        Image cImage = c.GetComponent<Image>();
+        Debug.Log("Index: " + cellIndex);
+        Debug.Log(playerMark);
+        c.SetAsMarked(playerMark);
     }
     public void LoadStrartMenu() // VERIFIED
     {
@@ -53,13 +58,6 @@ public class GameUIController : MonoBehaviour
     {
         grid.SetActive(false);
         endMenu.SetActive(true);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        // instanciate all cells
-        // LoadStrartMenu();
     }
 
 
