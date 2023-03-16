@@ -18,22 +18,26 @@ public class GameManager : MonoBehaviour
         BoardController.gameEvent -= HandleGameEvent;
 
     }
-    void Start()
+    public void Start()
     {
+        uIController.UpdateHeadline("");
         uIController.LoadStrartMenu();
+        // boardController.StartNewGame(); // Clear board marks, and logic info
         boardController.PrintBoard();
     }
-
+    public void RunGame()
+    {
+        boardController.StartNewGame();
+        uIController.LoadGamePanel();
+        uIController.UpdateHeadline("");
+    }
     private void DetectClick(int[] cellCoordinates)
     {
-        Debug.Log("got click " + cellCoordinates);
-        Debug.Log("got click Image " + boardController.GetCurrentPlayer().playerSprite);
         // mark board with current player mark
         uIController.MarkCell(cellCoordinates, boardController.GetCurrentPlayer().playerSprite);
         // update game logic - update board, switch turn, test for endGame event
         boardController.UpdateBoard(cellCoordinates);
     }
-
     private void HandleGameEvent(BoardController.Message msg)
     {
         if (msg == BoardController.Message.WIN)
@@ -53,11 +57,6 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    private void EndGame()
-    {
-        uIController.LoadEndMenu();
-    }
-
 
 
     // load game run

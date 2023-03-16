@@ -11,11 +11,12 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private GameObject grid;
     [SerializeField] private CellButton cellToInstantiate;
 
-    void Start()
+
+    public void Start()
     {
         InitCells();
     }
-    public void InitCells() // VERIFIED
+    private void InitCells() // VERIFIED
     {
         // init all the cells in the board
         for (int i = 0; i < BoardModel.BOARD_SIZE; i++)
@@ -39,31 +40,34 @@ public class GameUIController : MonoBehaviour
         // Get the relevant cell based on it's coordinates:
         GameObject cellToMark = grid.transform.GetChild(cellIndex).gameObject;
         CellButton c = cellToMark.GetComponent<CellButton>();
-        Image cImage = c.GetComponent<Image>();
         Debug.Log("Index: " + cellIndex);
-        Debug.Log(playerMark);
         c.SetAsMarked(playerMark);
     }
     public void LoadStrartMenu() // VERIFIED
     {
+        grid.SetActive(false);
+        endMenu.SetActive(false);
         startMenu.SetActive(true);
         Debug.Log("Start Menu");
     }
     public void LoadGamePanel() // VERIFIED
     {
         startMenu.SetActive(false);
+        endMenu.SetActive(false);
+        ClearCells();
         grid.SetActive(true);
     }
     public void LoadEndMenu() // VERIFIED
     {
-        grid.SetActive(false);
+        // grid.SetActive(false);
         endMenu.SetActive(true);
     }
-
-
-    // Update is called once per frame
-    void Update()
+    public void ClearCells()
     {
-
+        foreach (Transform cell in grid.transform)
+        {
+            CellButton c = cell.gameObject.GetComponent<CellButton>();
+            c.ClearMark();
+        }
     }
 }

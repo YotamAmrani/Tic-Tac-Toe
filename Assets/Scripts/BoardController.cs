@@ -5,7 +5,6 @@ public class BoardController : MonoBehaviour
 {
     // private int boardSize = 3;
     // public Cell cellToInstansiate;
-    public Player playerToInstansiate;
     public BoardModel boardModel;
     private Player currentPlayer;
     private int currentPlayerIndex = 0;
@@ -14,42 +13,23 @@ public class BoardController : MonoBehaviour
     public enum Message { WIN, TIE, SWITCH };
     public static Action<Message> gameEvent;
 
-    public void Start()
+    void Start()
     {
-        InitializeBoard();
-        currentPlayer = boardModel.players[currentPlayerIndex];
-        // PrintBoard();
+        StartNewGame();
     }
 
-    // public void InitCells()
-    // {
-    //     for (int i = 0; i < BoardModel.BOARD_SIZE * BoardModel.BOARD_SIZE; i++)
-    //     {
-    //         Cell tempCell = Instantiate(cellToInstansiate, transform);
-    //         tempCell.cellRow = (int)(i / BoardModel.BOARD_SIZE);
-    //         tempCell.cellCol = (int)(i % BoardModel.BOARD_SIZE);
-    //         tempCell.SetCellPosition(tempCell.cellRow, tempCell.cellCol);
-    //         tempCell.name = "Cell " + i.ToString();
-    //     }
-
-    // }
-
-    // public void DisableCells()
-    // {
-    //     foreach (Cell child in GetComponentsInChildren<Cell>())
-    //     {
-    //         if (IsOpenCell(child.cellRow, child.cellCol))
-    //         {
-    //             child.SetAsMarked(null);
-    //         }
-
-    //     }
-    // }
+    public void StartNewGame()
+    {
+        InitializeBoard();
+        Debug.Log("Player index" + currentPlayerIndex);
+        currentPlayer = boardModel.players[currentPlayerIndex];
+        turnsCount = 0;
+    }
 
     public void SwitchPlayer()
     {
-        currentPlayerIndex += 1;
-        currentPlayer = boardModel.players[(currentPlayerIndex) % BoardModel.PLAYERS_COUNT];
+        currentPlayerIndex = (currentPlayerIndex + 1) % BoardModel.PLAYERS_COUNT;
+        currentPlayer = boardModel.players[currentPlayerIndex];
     }
 
     public Player GetCurrentPlayer()
@@ -68,14 +48,14 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    private bool CheckRows(Player player)
+    private bool CheckRows()
     {
         for (int i = 0; i < BoardModel.BOARD_SIZE; i++)
         {
             int signCounter = 0;
             for (int j = 0; j < BoardModel.BOARD_SIZE; j++)
             {
-                if (player.playerSign == boardModel.board[i, j])
+                if (currentPlayer.playerSign == boardModel.board[i, j])
                 {
                     signCounter += 1;
                 }
@@ -88,14 +68,14 @@ public class BoardController : MonoBehaviour
         return false;
     }
 
-    private bool CheckColumns(Player player)
+    private bool CheckColumns()
     {
         for (int i = 0; i < BoardModel.BOARD_SIZE; i++)
         {
             int signCounter = 0;
             for (int j = 0; j < BoardModel.BOARD_SIZE; j++)
             {
-                if (player.playerSign == boardModel.board[j, i])
+                if (currentPlayer.playerSign == boardModel.board[j, i])
                 {
                     signCounter += 1;
                 }
@@ -108,12 +88,12 @@ public class BoardController : MonoBehaviour
         return false;
     }
 
-    private bool CheckDiagonlA(Player player)
+    private bool CheckDiagonlA()
     {
         int signCounter = 0;
         for (int j = 0; j < BoardModel.BOARD_SIZE; j++)
         {
-            if (player.playerSign == boardModel.board[j, j])
+            if (currentPlayer.playerSign == boardModel.board[j, j])
             {
                 signCounter += 1;
             }
@@ -126,12 +106,12 @@ public class BoardController : MonoBehaviour
         return false;
     }
 
-    private bool CheckDiagonlB(Player player)
+    private bool CheckDiagonlB()
     {
         int signCounter = 0;
         for (int j = 0; j < BoardModel.BOARD_SIZE; j++)
         {
-            if (player.playerSign == boardModel.board[BoardModel.BOARD_SIZE - 1 - j, j])
+            if (currentPlayer.playerSign == boardModel.board[BoardModel.BOARD_SIZE - 1 - j, j])
             {
                 signCounter += 1;
             }
@@ -198,8 +178,8 @@ public class BoardController : MonoBehaviour
 
     public bool IsWinner()
     {
-        return CheckRows(currentPlayer) || CheckColumns(currentPlayer)
-        || CheckDiagonlA(currentPlayer) || CheckDiagonlB(currentPlayer);
+        return CheckRows() || CheckColumns()
+        || CheckDiagonlA() || CheckDiagonlB();
     }
 
 }

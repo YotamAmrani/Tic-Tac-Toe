@@ -220,7 +220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a8d47cb6a5070458e5e7f7d5ca64a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerToInstansiate: {fileID: 0}
   boardModel: {fileID: 1011710365}
 --- !u!1 &84077641
 GameObject:
@@ -809,9 +808,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2907453766603993997, guid: 4973b9806cd9d144abc786b1ba502b5e, type: 3}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 8347076984027741370}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: RunGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1105,9 +1104,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2907453766603993997, guid: 4973b9806cd9d144abc786b1ba502b5e, type: 3}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: Menu
+      - m_Target: {fileID: 8347076984027741370}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Start
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1791,9 +1790,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1988983003}
-        m_TargetAssemblyTypeName: GameUIController, Assembly-CSharp
-        m_MethodName: LoadGamePanel
+      - m_Target: {fileID: 8347076984027741370}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: RunGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

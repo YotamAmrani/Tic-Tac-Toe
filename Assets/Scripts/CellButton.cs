@@ -17,13 +17,11 @@ public class CellButton : MonoBehaviour
         Debug.Log("Clicked " + (boardCoordinates[0], boardCoordinates[1]));
         // SetAsMarked(mark);
     }
-
     public void SetCellCoordinates(int row, int column) //VERIFIED
     {
         boardCoordinates[0] = row;
         boardCoordinates[1] = column;
     }
-
     public void SetCellPosition() //VERIFIED
     {
         // default position is  0,0 based on the center cell 
@@ -31,7 +29,6 @@ public class CellButton : MonoBehaviour
         int yPos = CELL_SIZE * (boardCoordinates[1] - 1);
         transform.localPosition = new Vector3(xPos, yPos, 0);
     }
-
     public void SetAsMarked(Sprite playerMark) // VERIFIED
     {
         if (!isMarked)
@@ -44,4 +41,14 @@ public class CellButton : MonoBehaviour
             mark.color = tmp;
         }
     }
+    public void ClearMark()
+    {
+        isMarked = false;
+        // Set alpha to full visibility 
+        mark.sprite = null;
+        Color tmp = mark.color;
+        tmp.a = 0;
+        mark.color = tmp;
+    }
+
 }
