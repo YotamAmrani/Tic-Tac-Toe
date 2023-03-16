@@ -58,21 +58,17 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void Quit()
+    {
+        Application.Quit();
+        Debug.Log("Qui game!");
+    }
 
-    // load game run
-    // check for clicks events
-    // - start game button / runGame again
-    // - end game event
-    // - Back to menu event
-    // update board
     // look for special cases
     //  update UI - V
 
     // next: move Mark into player?
     // update the cell configuration
-    // create events for each button
-    // handle player instanciation - is it needed? how to load sprites?
-    // change player to be non mono
 }
 
 

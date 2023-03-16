@@ -70,4 +70,5 @@ public class GameUIController : MonoBehaviour
             c.ClearMark();
         }
     }
+
 }
