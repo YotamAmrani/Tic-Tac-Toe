@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
     public BoardController boardController;
     public GameUIController uIController;
 
-    // public Cell cellToInstansiate;
     public void OnEnable()
     {
         CellButton.Clicked += DetectClick;
@@ -28,7 +27,8 @@ public class GameManager : MonoBehaviour
     {
         boardController.StartNewGame();
         uIController.LoadNewGamePanel();
-        uIController.UpdateHeadline("");
+        uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName
+            + " it is your turn!");
     }
     private void DetectClick(int[] cellCoordinates)
     {

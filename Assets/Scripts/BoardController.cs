@@ -3,8 +3,6 @@ using System;
 
 public class BoardController : MonoBehaviour
 {
-    // private int boardSize = 3;
-    // public Cell cellToInstansiate;
     public BoardModel boardModel;
     private Player currentPlayer;
     private int currentPlayerIndex = 0;
