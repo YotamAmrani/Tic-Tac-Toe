@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class GameUIController : MonoBehaviour
 {
-    public BoardModel boardModel;
     [SerializeField] private Text headline;
     [SerializeField] private GameObject startMenu;
     [SerializeField] private GameObject endMenu;
