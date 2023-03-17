@@ -3,7 +3,7 @@ using System;
 
 public class BoardController : MonoBehaviour
 {
-    public BoardModel boardModel;
+    [SerializeField] private BoardModel boardModel;
     private Player currentPlayer;
     private int currentPlayerIndex = 0;
     private int turnsCount = 0;

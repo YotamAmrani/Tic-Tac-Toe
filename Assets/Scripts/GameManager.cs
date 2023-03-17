@@ -1,27 +1,26 @@
 using UnityEngine;
-using System;
 
 public class GameManager : MonoBehaviour
 {
-    public BoardController boardController;
-    public GameUIController uIController;
+    [SerializeField] private BoardController boardController;
+    [SerializeField] private GameUIController uIController;
 
-    public void OnEnable()
+    void OnEnable()
     {
         CellButton.Clicked += DetectClick;
         BoardController.gameEvent += HandleGameEvent;
     }
-    public void OnDisable()
+    void OnDisable()
     {
         CellButton.Clicked -= DetectClick;
         BoardController.gameEvent -= HandleGameEvent;
 
     }
-    public void Start()
+    void Start()
     {
         uIController.UpdateHeadline("");
         uIController.LoadStrartMenu();
-        boardController.PrintBoard();
+        // boardController.PrintBoard();
     }
     public void RunGame()
     {
@@ -54,6 +53,7 @@ public class GameManager : MonoBehaviour
             uIController.UpdateHeadline("Player " + boardController.GetCurrentPlayer().playerName
             + " it is your turn!");
         }
+        // boardController.PrintBoard();
 
     }
     public void Quit()
@@ -64,12 +64,10 @@ public class GameManager : MonoBehaviour
 
 }
 
-
-// look for special cases
-//  update UI - V
-
-// next: move Mark into player?
-// update the cell configuration
+// Change text components to TextMeshPro
+// Create animation in the right way
+// Look for Permissions issues: 
+// ----- board model should be private, not public
 
 // private void HandleHit(Cell clickedCell)
 // {

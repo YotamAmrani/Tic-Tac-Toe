@@ -10,7 +10,6 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private GameObject grid;
     [SerializeField] private CellButton cellToInstantiate;
 
-
     public void Start()
     {
         InitCells();
