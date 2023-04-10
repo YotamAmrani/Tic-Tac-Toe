@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardModel: {fileID: 1011710365}
+  uIController: {fileID: 1988983003}
 --- !u!1 &84077641
 GameObject:
   m_ObjectHideFlags: 0
