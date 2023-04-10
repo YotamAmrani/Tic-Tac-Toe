@@ -3,17 +3,32 @@ using System;
 
 public class BoardController : MonoBehaviour
 {
-    [SerializeField] private BoardModel boardModel;
+    private BoardModel boardModel;
+    [SerializeField] private GameUIController uIController;
+    [SerializeField] private Sprite[] playersSprites = new Sprite[BoardModel.PLAYERS_COUNT];
+
     private Player currentPlayer;
     private int currentPlayerIndex = 0;
     private int turnsCount = 0;
 
-    public enum Message { WIN, TIE, SWITCH };
-    public static Action<Message> gameEvent;
+    public enum GameState { WIN, TIE, SWITCH };
 
     void Start()
     {
+        // Init the board model object Once, when launching the game scene
+        boardModel = new BoardModel();
+        InitializePlayers();
         StartNewGame();
+    }
+
+    void OnEnable()
+    {
+        CellButton.Clicked += DetectClick;
+    }
+
+    void OnDisable()
+    {
+        CellButton.Clicked -= DetectClick;
     }
 
     public void StartNewGame()
@@ -21,17 +36,6 @@ public class BoardController : MonoBehaviour
         InitializeBoard();
         currentPlayer = boardModel.players[currentPlayerIndex];
         turnsCount = 0;
-    }
-
-    private void SwitchPlayer()
-    {
-        currentPlayerIndex = (currentPlayerIndex + 1) % BoardModel.PLAYERS_COUNT;
-        currentPlayer = boardModel.players[currentPlayerIndex];
-    }
-
-    public Player GetCurrentPlayer()
-    {
-        return currentPlayer;
     }
 
     private void InitializeBoard() // VERIFIED
@@ -43,6 +47,25 @@ public class BoardController : MonoBehaviour
                 boardModel.board[i, j] = BoardModel.Mark.None;
             }
         }
+    }
+
+    private void InitializePlayers()
+    {
+        for (int i = 0; i < BoardModel.PLAYERS_COUNT; i++)
+        {
+            boardModel.players[i] = new Player((BoardModel.Mark)(i + 1), playersSprites[i], "" + (char)(((int)'A') + i));
+        }
+    }
+
+    private void SwitchPlayer()
+    {
+        currentPlayerIndex = (currentPlayerIndex + 1) % BoardModel.PLAYERS_COUNT;
+        currentPlayer = boardModel.players[currentPlayerIndex];
+    }
+
+    public Player GetCurrentPlayer()
+    {
+        return currentPlayer;
     }
 
     private bool CheckRows()
@@ -151,17 +174,17 @@ public class BoardController : MonoBehaviour
             if (IsWinner())
             {
                 // invoke winning event !
-                gameEvent(Message.WIN);
+                HandleGameEvent(GameState.WIN);
             }
             else if (IsTie())
             {
                 // invoke tie event
-                gameEvent(Message.TIE);
+                HandleGameEvent(GameState.TIE);
             }
             else
             {
                 SwitchPlayer();
-                gameEvent(Message.SWITCH);
+                HandleGameEvent(GameState.SWITCH);
             }
             PrintBoard();
         }
@@ -177,6 +200,35 @@ public class BoardController : MonoBehaviour
     {
         return CheckRows() || CheckColumns()
         || CheckDiagonlA() || CheckDiagonlB();
+    }
+
+    private void DetectClick(int[] cellCoordinates)
+    {
+        // mark board with current player mark
+        uIController.MarkCell(cellCoordinates, GetCurrentPlayer().playerSprite);
+        // update game logic - update board, switch turn, test for endGame event
+        UpdateBoard(cellCoordinates);
+    }
+
+    private void HandleGameEvent(BoardController.GameState msg)
+    {
+        if (msg == BoardController.GameState.WIN)
+        {
+            uIController.UpdateHeadline("Player " + GetCurrentPlayer().playerName + " win!");
+            uIController.LoadEndMenu();
+        }
+        else if (msg == BoardController.GameState.TIE)
+        {
+            uIController.UpdateHeadline("It's a TIE!");
+            uIController.LoadEndMenu();
+        }
+        else
+        {
+            uIController.UpdateHeadline("Player " + GetCurrentPlayer().playerName
+            + " it is your turn!");
+        }
+        // boardController.PrintBoard();
+
     }
 
 }
