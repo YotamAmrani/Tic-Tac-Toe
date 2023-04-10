@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BoardModel : MonoBehaviour
+public class BoardModel
 {
     public enum Mark { None, X, O };
     public const int BOARD_SIZE = 3;
