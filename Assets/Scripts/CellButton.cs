@@ -4,8 +4,9 @@ using System;
 
 public class CellButton : MonoBehaviour
 {
-    [SerializeField] private const int CELL_SIZE = 20;
+
     [SerializeField] private int[] boardCoordinates = new int[2];
+    private const int CELL_SIZE = 20;
     private bool isMarked = false;
     public Image mark;
     public static Action<int[]> Clicked;
